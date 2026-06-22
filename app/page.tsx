@@ -376,14 +376,14 @@ function SourceCard({
           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: accent }} />
           <span className="text-sm font-medium text-[#333]">{label}</span>
           {question && !isOpen && (
-            <span className="text-xs text-[#bbb] italic truncate max-w-xs hidden sm:block">"{question}"</span>
+            <span className="text-xs text-[#bbb] italic truncate max-w-xs hidden sm:block">&quot;{question}&quot;</span>
           )}
         </div>
         <span className="text-xs text-[#ccc]">{isOpen ? "▲" : "▼"}</span>
       </button>
       {isOpen && (
         <div className="px-4 pb-4 border-t border-[#f0eeeb]">
-          {question && <p className="text-xs text-[#aaa] italic mt-3 mb-3">"{question}"</p>}
+          {question && <p className="text-xs text-[#aaa] italic mt-3 mb-3">&quot;{question}&quot;</p>}
           <div className="text-sm text-[#555] leading-relaxed whitespace-pre-wrap">{content}</div>
         </div>
       )}
