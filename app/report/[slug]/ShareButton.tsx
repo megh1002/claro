@@ -2,11 +2,11 @@
 
 export function ShareButton() {
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-[#aaa]">Share this report</span>
+    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <span style={{ fontSize: 12, color: "#3d2030" }}>Share this report</span>
       <button
         onClick={() => navigator.clipboard.writeText(window.location.href)}
-        className="px-4 py-2 bg-[#111] text-white text-xs rounded-lg hover:bg-[#333] transition-colors"
+        style={{ padding: "8px 16px", background: "#8b1a3a", color: "#f0e0e5", border: "none", borderRadius: 8, fontSize: 12, cursor: "pointer" }}
       >
         Copy link
       </button>

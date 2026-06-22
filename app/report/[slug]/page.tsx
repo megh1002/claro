@@ -3,11 +3,7 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { ShareButton } from "./ShareButton";
 
-export default async function ReportPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function ReportPage({ params }: { params: { slug: string } }) {
   const { data: report } = await supabase
     .from("reports")
     .select("*")
@@ -17,59 +13,46 @@ export default async function ReportPage({
   if (!report) notFound();
 
   const agents = [
-    { label: "Background", content: report.background, accent: "#2563eb" },
-    { label: "Current Events", content: report.current_events, accent: "#7c3aed" },
-    { label: "Perspectives", content: report.perspectives, accent: "#ea580c" },
-    { label: "So What?", content: report.so_what, accent: "#16a34a" },
+    { label: "Background", content: report.background, accent: "#4a9eff" },
+    { label: "Current Events", content: report.current_events, accent: "#a855f7" },
+    { label: "Perspectives", content: report.perspectives, accent: "#f97316" },
+    { label: "So What?", content: report.so_what, accent: "#22c55e" },
   ];
 
   return (
-    <main className="min-h-screen bg-[#f7f6f3]">
-      <nav className="border-b border-[#e8e6e1] bg-[#f7f6f3] px-6 py-4 flex items-center justify-between">
-        <a href="/" className="text-xl font-bold tracking-tight text-[#111]">
-          Scopa
-        </a>
-        <span className="text-xs text-[#aaa] font-mono">
-          {new Date(report.created_at).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })}
+    <main style={{ background: "#0e0b0d", minHeight: "100vh", color: "#f0e0e5" }}>
+      <nav style={{ borderBottom: "1px solid #1e1318", padding: "18px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a href="/" style={{ fontSize: 18, fontWeight: 500, color: "#f0e0e5", textDecoration: "none", letterSpacing: -0.5 }}>Scopa</a>
+        <span style={{ fontSize: 11, color: "#3d2030", fontFamily: "monospace" }}>
+          {new Date(report.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
         </span>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-5 py-14">
-        <div className="mb-10">
-          <p className="text-xs text-[#aaa] uppercase tracking-widest font-mono mb-1">Report</p>
-          <h1 className="text-3xl font-bold text-[#111] tracking-tight">{report.topic}</h1>
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "48px 40px" }}>
+        <div style={{ marginBottom: 32 }}>
+          <p style={{ fontSize: 10, color: "#3d2030", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Report</p>
+          <h1 style={{ fontSize: 28, fontWeight: 500, color: "#f0e0e5", letterSpacing: -0.5 }}>{report.topic}</h1>
         </div>
 
-        {/* Synthesized report */}
-        <div className="bg-white border border-[#e8e6e1] rounded-2xl px-7 py-6 shadow-sm mb-10">
+        {/* Report card */}
+        <div style={{ background: "#130c10", border: "1px solid #2a1520", borderRadius: 14, padding: "24px 28px", marginBottom: 28 }}>
           <div className="report-body">
             <ReactMarkdown>{report.synthesized}</ReactMarkdown>
           </div>
         </div>
 
         {/* Agent sources */}
-        <div>
-          <p className="text-xs text-[#bbb] font-mono uppercase tracking-widest mb-3">
-            Agent sources
-          </p>
-          <div className="space-y-3">
+        <div style={{ marginBottom: 32 }}>
+          <p style={{ fontSize: 10, color: "#3d2030", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 14 }}>Agent sources</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {agents.map((agent) => (
-              <details key={agent.label} className="rounded-xl border border-[#e8e6e1] bg-white shadow-sm">
-                <summary className="flex items-center gap-2.5 px-4 py-3 cursor-pointer select-none hover:bg-[#fafaf9] transition-colors rounded-xl">
-                  <span
-                    className="w-2 h-2 rounded-full shrink-0"
-                    style={{ backgroundColor: agent.accent }}
-                  />
-                  <span className="text-sm font-medium text-[#333]">{agent.label}</span>
+              <details key={agent.label} style={{ borderRadius: 10, border: "1px solid #1e1318", background: "#130c10", overflow: "hidden" }}>
+                <summary style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", cursor: "pointer", listStyle: "none" }}>
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: agent.accent, flexShrink: 0, display: "inline-block" }} />
+                  <span style={{ fontSize: 12, fontWeight: 500, color: "#f0e0e5" }}>{agent.label}</span>
                 </summary>
-                <div className="px-4 pb-4 border-t border-[#f0eeeb]">
-                  <div className="text-sm text-[#555] leading-relaxed whitespace-pre-wrap pt-3">
-                    {agent.content}
-                  </div>
+                <div style={{ padding: "0 16px 16px", borderTop: "1px solid #1e1318" }}>
+                  <div style={{ fontSize: 13, color: "#a07080", lineHeight: 1.7, whiteSpace: "pre-wrap", paddingTop: 12 }}>{agent.content}</div>
                 </div>
               </details>
             ))}
@@ -77,11 +60,10 @@ export default async function ReportPage({
         </div>
 
         {/* Share */}
-        <div className="mt-10 pt-8 border-t border-[#e8e6e1]">
+        <div style={{ borderTop: "1px solid #1e1318", paddingTop: 24 }}>
           <ShareButton />
         </div>
       </div>
     </main>
   );
 }
-
