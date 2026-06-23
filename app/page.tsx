@@ -189,12 +189,12 @@ export default function Home() {
   const reportReady = phase === "done" && research.synthesized && research.synthStatus === "done";
 
   return (
-    <main style={{ background: "var(--bg)", minHeight: "100vh" }}>
+    <main style={{ background: "#0e0b0d", minHeight: "100vh" }}>
       {/* Nav */}
-      <nav style={{ borderBottom: "1px solid var(--border-subtle)", padding: "18px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: 18, fontWeight: 500, color: "var(--text-primary)", letterSpacing: -0.5 }}>Scopa</span>
+      <nav style={{ borderBottom: "1px solid #2a1520", padding: "18px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: 18, fontWeight: 500, color: "#f5eaee", letterSpacing: -0.5 }}>Scopa</span>
         {phase !== "input" && (
-          <button onClick={handleReset} style={{ fontSize: 12, color: "var(--text-muted)", background: "none", border: "none", cursor: "pointer" }}>
+          <button onClick={handleReset} style={{ fontSize: 12, color: "#7a4560", background: "none", border: "none", cursor: "pointer" }}>
             ← new topic
           </button>
         )}
@@ -213,8 +213,8 @@ export default function Home() {
       {phase !== "input" && (
         <div style={{ maxWidth: 640, margin: "0 auto", padding: "48px 40px" }}>
           <div style={{ marginBottom: 36 }}>
-            <p style={{ fontSize: 10, color: "var(--text-muted)", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Topic</p>
-            <h2 style={{ fontSize: 24, fontWeight: 500, color: "var(--text-primary)", letterSpacing: -0.5 }}>{topic}</h2>
+            <p style={{ fontSize: 10, color: "#7a4560", fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Topic</p>
+            <h2 style={{ fontSize: 24, fontWeight: 500, color: "#f5eaee", letterSpacing: -0.5 }}>{topic}</h2>
           </div>
 
           {error && (
@@ -239,9 +239,9 @@ export default function Home() {
           {research.synthesized && (
             <div style={{ marginBottom: 28 }}>
               {research.synthStatus === "working" && (
-                <p style={{ fontSize: 11, color: "var(--text-muted)", fontFamily: "monospace", marginBottom: 14 }}>writing report...</p>
+                <p style={{ fontSize: 11, color: "#7a4560", fontFamily: "monospace", marginBottom: 14 }}>writing report...</p>
               )}
-              <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 14, padding: "24px 28px" }}>
+              <div style={{ background: "#130c10", border: "1px solid #2a1520", borderRadius: 14, padding: "24px 28px" }}>
                 <div className="report-body">
                   <ReactMarkdown>{research.synthesized}</ReactMarkdown>
                 </div>
@@ -251,9 +251,9 @@ export default function Home() {
 
           {/* Review step */}
           {reportReady && (
-            <div style={{ marginBottom: 28, padding: 20, background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14 }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)", marginBottom: 4 }}>Review before finalizing</p>
-              <p style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 16 }}>
+            <div style={{ marginBottom: 28, padding: 20, background: "#130c10", border: "1px solid #3d2030", borderRadius: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 500, color: "#f5eaee", marginBottom: 4 }}>Review before finalizing</p>
+              <p style={{ fontSize: 11, color: "#7a4560", marginBottom: 16 }}>
                 Not happy with a section? Re-run it. Happy? Finalize to get a shareable link.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
@@ -262,7 +262,7 @@ export default function Home() {
                     key={agent.name}
                     onClick={() => handleRerun(agent.name)}
                     disabled={!!rerunning}
-                    style={{ padding: "6px 13px", borderRadius: 8, border: "1px solid var(--border)", fontSize: 11, color: "var(--text-secondary)", background: "var(--bg)", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, opacity: rerunning ? 0.4 : 1 }}
+                    style={{ padding: "6px 13px", borderRadius: 8, border: "1px solid #3d2030", fontSize: 11, color: "#c4899a", background: "#0e0b0d", cursor: "pointer", display: "flex", alignItems: "center", gap: 5, opacity: rerunning ? 0.4 : 1 }}
                   >
                     <span style={{ color: agent.accent }}>↺</span> Re-run {agent.label}
                   </button>
@@ -271,7 +271,7 @@ export default function Home() {
               <button
                 onClick={handleFinalize}
                 disabled={finalizing}
-                style={{ width: "100%", padding: "13px", background: "var(--accent)", color: "var(--accent-text)", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 500, cursor: "pointer", opacity: finalizing ? 0.6 : 1 }}
+                style={{ width: "100%", padding: "13px", background: "#8b1a3a", color: "#f5eaee", border: "none", borderRadius: 10, fontSize: 13, fontWeight: 500, cursor: "pointer", opacity: finalizing ? 0.6 : 1 }}
               >
                 {finalizing ? "Saving..." : "Looks good — finalize & get shareable link →"}
               </button>
@@ -281,7 +281,7 @@ export default function Home() {
           {/* Agent sources */}
           {allAgentsDone && (
             <div>
-              <p style={{ fontSize: 10, color: "var(--text-muted)", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 14 }}>Agent sources</p>
+              <p style={{ fontSize: 10, color: "#7a4560", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 14 }}>Agent sources</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {AGENT_CONFIG.map((agent) => (
                   <SourceCard
@@ -352,13 +352,13 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
     <div style={{ maxWidth: 680, margin: "0 auto", padding: "64px 40px 80px" }}>
       {/* Hero */}
       <div style={{ marginBottom: 52 }}>
-        <p style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 16 }}>
+        <p style={{ fontSize: 10, color: "#7a4560", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 16 }}>
           know anything, instantly
         </p>
-        <h1 style={{ fontSize: 96, fontWeight: 500, letterSpacing: -5, lineHeight: 1, color: "var(--text-primary)", marginBottom: 20 }}>
+        <h1 style={{ fontSize: 96, fontWeight: 500, letterSpacing: -5, lineHeight: 1, color: "#f5eaee", marginBottom: 20 }}>
           Scopa.
         </h1>
-        <p style={{ fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 440, marginBottom: 36 }}>
+        <p style={{ fontSize: 15, color: "#c4899a", lineHeight: 1.7, maxWidth: 440, marginBottom: 36 }}>
           4 AI agents research any topic in parallel. You see every source, every angle. You control what makes the final report.
         </p>
 
@@ -369,18 +369,18 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
               placeholder=""
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              style={{ width: "100%", background: "var(--bg-input)", border: "1px solid var(--border)", borderRadius: 12, padding: "14px 18px", fontSize: 14, color: "var(--text-primary)", outline: "none", boxSizing: "border-box" }}
+              style={{ width: "100%", background: "#160e12", border: "1px solid #3d2030", borderRadius: 12, padding: "14px 18px", fontSize: 14, color: "#f5eaee", outline: "none", boxSizing: "border-box" }}
             />
             {!topic && (
-              <span style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", fontSize: 14, color: "var(--text-muted)", pointerEvents: "none", whiteSpace: "nowrap", overflow: "hidden", maxWidth: "calc(100% - 36px)" }}>
-                {typedText}<span className="animate-blink" style={{ borderRight: "1.5px solid var(--text-muted)", marginLeft: 1 }} />
+              <span style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", fontSize: 14, color: "#7a4560", pointerEvents: "none", whiteSpace: "nowrap", overflow: "hidden", maxWidth: "calc(100% - 36px)" }}>
+                {typedText}<span className="animate-blink" style={{ borderRight: "1.5px solid #7a4560", marginLeft: 1 }} />
               </span>
             )}
           </div>
           <button
             type="submit"
             disabled={!topic.trim()}
-            style={{ background: "var(--accent)", color: "var(--accent-text)", border: "none", borderRadius: 12, padding: "14px 22px", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap", opacity: topic.trim() ? 1 : 0.5 }}
+            style={{ background: "#8b1a3a", color: "#f5eaee", border: "none", borderRadius: 12, padding: "14px 22px", fontSize: 14, fontWeight: 500, cursor: "pointer", whiteSpace: "nowrap", opacity: topic.trim() ? 1 : 0.5 }}
           >
             Research this →
           </button>
@@ -388,7 +388,7 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {EXAMPLE_TOPICS.map((t) => (
-            <button key={t} onClick={() => setTopic(t)} style={{ padding: "5px 14px", borderRadius: 99, border: "1px solid var(--border-subtle)", fontSize: 11, color: "var(--text-secondary)", background: "var(--bg-card)", cursor: "pointer" }}>
+            <button key={t} onClick={() => setTopic(t)} style={{ padding: "5px 14px", borderRadius: 99, border: "1px solid #2a1520", fontSize: 11, color: "#c4899a", background: "#130c10", cursor: "pointer" }}>
               {t}
             </button>
           ))}
@@ -397,17 +397,17 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
 
       {/* How it works */}
       <div style={{ marginBottom: 52 }}>
-        <p style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>how it works</p>
+        <p style={{ fontSize: 10, color: "#7a4560", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>how it works</p>
         <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
           {HOW_IT_WORKS.map((step, i) => (
             <div key={step.label} style={{ display: "flex", alignItems: "flex-start", gap: 6, flex: 1 }}>
-              <div style={{ flex: 1, background: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 10, padding: "12px 14px", transition: "border-color 0.3s" }}>
+              <div style={{ flex: 1, background: "#130c10", border: "1px solid #2a1520", borderRadius: 10, padding: "12px 14px", transition: "border-color 0.3s" }}>
                 <div className="animate-pulse-dot" style={{ width: 6, height: 6, borderRadius: "50%", background: step.color, marginBottom: 8 }} />
-                <div style={{ fontSize: 11, fontWeight: 500, color: "var(--text-primary)", marginBottom: 3 }}>{step.label}</div>
-                <div style={{ fontSize: 10, color: "var(--text-secondary)", lineHeight: 1.5 }}>{step.desc}</div>
+                <div style={{ fontSize: 11, fontWeight: 500, color: "#f5eaee", marginBottom: 3 }}>{step.label}</div>
+                <div style={{ fontSize: 10, color: "#c4899a", lineHeight: 1.5 }}>{step.desc}</div>
               </div>
               {i < HOW_IT_WORKS.length - 1 && (
-                <div style={{ color: "var(--text-muted)", fontSize: 14, paddingTop: 20, flexShrink: 0 }}>→</div>
+                <div style={{ color: "#7a4560", fontSize: 14, paddingTop: 20, flexShrink: 0 }}>→</div>
               )}
             </div>
           ))}
@@ -416,26 +416,26 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
 
       {/* Live agent preview */}
       <div style={{ marginBottom: 52 }}>
-        <p style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>4 agents, one topic</p>
+        <p style={{ fontSize: 10, color: "#7a4560", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>4 agents, one topic</p>
         <div style={{ display: "flex", gap: 8 }}>
           {AGENT_CONFIG.map((agent, i) => (
             <div
               key={agent.name}
-              style={{ flex: 1, background: "var(--bg-card)", border: `1px solid ${i === activeAgent ? agent.accent + "60" : "var(--border-subtle)"}`, borderRadius: 10, padding: "14px", transition: "border-color 0.5s" }}
+              style={{ flex: 1, background: "#130c10", border: `1px solid ${i === activeAgent ? agent.accent + "60" : "#2a1520"}`, borderRadius: 10, padding: "14px", transition: "border-color 0.5s" }}
             >
               <div
                 className={i === activeAgent ? "animate-pulse-dot" : ""}
                 style={{ width: 6, height: 6, borderRadius: "50%", background: agent.accent, marginBottom: 10 }}
               />
-              <div style={{ fontSize: 11, fontWeight: 500, color: "var(--text-primary)", marginBottom: 8 }}>{agent.label}</div>
+              <div style={{ fontSize: 11, fontWeight: 500, color: "#f5eaee", marginBottom: 8 }}>{agent.label}</div>
               {[agentProgress[i] ?? 70, (agentProgress[i] ?? 50) - 20, (agentProgress[i] ?? 60) - 10].map((w, j) => (
                 <div
                   key={j}
                   className="animate-shimmer"
-                  style={{ height: 5, borderRadius: 2, background: i === activeAgent ? `${agent.accent}40` : "var(--border-subtle)", marginBottom: 4, width: `${Math.max(30, w)}%`, transition: "width 1s ease, background 0.5s" }}
+                  style={{ height: 5, borderRadius: 2, background: i === activeAgent ? `${agent.accent}40` : "#2a1520", marginBottom: 4, width: `${Math.max(30, w)}%`, transition: "width 1s ease, background 0.5s" }}
                 />
               ))}
-              <div style={{ marginTop: 8, fontSize: 9, color: i === activeAgent ? agent.accent : "var(--text-muted)", fontFamily: "monospace" }}>
+              <div style={{ marginTop: 8, fontSize: 9, color: i === activeAgent ? agent.accent : "#7a4560", fontFamily: "monospace" }}>
                 {i === activeAgent ? "researching..." : "standby"}
               </div>
             </div>
@@ -445,10 +445,10 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
 
       {/* You stay in control */}
       <div>
-        <p style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>you stay in control</p>
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)", borderRadius: 14, padding: "22px 24px" }}>
-          <p style={{ fontSize: 10, color: "var(--text-muted)", fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Report · burnout in modern work</p>
-          <p style={{ fontSize: 15, fontWeight: 500, color: "var(--text-primary)", marginBottom: 14 }}>Why everyone is suddenly burnt out</p>
+        <p style={{ fontSize: 10, color: "#7a4560", letterSpacing: "0.14em", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 20 }}>you stay in control</p>
+        <div style={{ background: "#130c10", border: "1px solid #2a1520", borderRadius: 14, padding: "22px 24px" }}>
+          <p style={{ fontSize: 10, color: "#7a4560", fontFamily: "monospace", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Report · burnout in modern work</p>
+          <p style={{ fontSize: 15, fontWeight: 500, color: "#f5eaee", marginBottom: 14 }}>Why everyone is suddenly burnt out</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
             {AGENT_CONFIG.map((a) => (
               <span key={a.name} style={{ padding: "3px 10px", borderRadius: 99, fontSize: 10, fontWeight: 500, background: `${a.accent}18`, color: a.accent, border: `1px solid ${a.accent}30` }}>
@@ -457,16 +457,16 @@ function LandingPage({ topic, setTopic, onSubmit }: { topic: string; setTopic: (
             ))}
           </div>
           {[100, 88, 72].map((w, i) => (
-            <div key={i} style={{ height: 6, borderRadius: 2, background: "var(--border-subtle)", marginBottom: 5, width: `${w}%` }} />
+            <div key={i} style={{ height: 6, borderRadius: 2, background: "#2a1520", marginBottom: 5, width: `${w}%` }} />
           ))}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 16 }}>
             {AGENT_CONFIG.map((a) => (
-              <div key={a.name} style={{ padding: "5px 12px", border: "1px solid var(--border-subtle)", borderRadius: 7, fontSize: 10, color: "var(--text-secondary)", background: "var(--bg)" }}>
+              <div key={a.name} style={{ padding: "5px 12px", border: "1px solid #2a1520", borderRadius: 7, fontSize: 10, color: "#c4899a", background: "#0e0b0d" }}>
                 ↺ Re-run {a.label}
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 12, padding: "11px", background: "var(--accent)", color: "var(--accent-text)", borderRadius: 10, fontSize: 12, fontWeight: 500, textAlign: "center" }}>
+          <div style={{ marginTop: 12, padding: "11px", background: "#8b1a3a", color: "#f5eaee", borderRadius: 10, fontSize: 12, fontWeight: 500, textAlign: "center" }}>
             Looks good — finalize & get shareable link →
           </div>
         </div>
@@ -488,22 +488,22 @@ function SourceCard({ label, question, content, accent, isOpen, onToggle }: {
   label: string; question?: string; content: string; accent: string; isOpen: boolean; onToggle: () => void;
 }) {
   return (
-    <div style={{ borderRadius: 10, border: `1px solid ${isOpen ? accent + "40" : "var(--border-subtle)"}`, background: "var(--bg-card)", overflow: "hidden" }}>
+    <div style={{ borderRadius: 10, border: `1px solid ${isOpen ? accent + "40" : "#2a1520"}`, background: "#130c10", overflow: "hidden" }}>
       <button onClick={onToggle} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: accent, flexShrink: 0, display: "inline-block" }} />
-          <span style={{ fontSize: 12, fontWeight: 500, color: "var(--text-primary)" }}>{label}</span>
+          <span style={{ fontSize: 12, fontWeight: 500, color: "#f5eaee" }}>{label}</span>
           {question && !isOpen && (
-            <span style={{ fontSize: 11, color: "var(--text-muted)", fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 280 }}>
+            <span style={{ fontSize: 11, color: "#7a4560", fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 280 }}>
               &quot;{question}&quot;
             </span>
           )}
         </div>
-        <span style={{ fontSize: 10, color: "var(--text-muted)" }}>{isOpen ? "▲" : "▼"}</span>
+        <span style={{ fontSize: 10, color: "#7a4560" }}>{isOpen ? "▲" : "▼"}</span>
       </button>
       {isOpen && (
-        <div style={{ padding: "0 16px 16px", borderTop: "1px solid var(--border-subtle)" }}>
-          {question && <p style={{ fontSize: 11, color: "var(--text-muted)", fontStyle: "italic", margin: "12px 0" }}>&quot;{question}&quot;</p>}
+        <div style={{ padding: "0 16px 16px", borderTop: "1px solid #2a1520" }}>
+          {question && <p style={{ fontSize: 11, color: "#7a4560", fontStyle: "italic", margin: "12px 0" }}>&quot;{question}&quot;</p>}
           <div style={{ fontSize: 13, color: "#a07080", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{content}</div>
         </div>
       )}
