@@ -35,7 +35,7 @@ A multi-agent AI decision-making tool. Describe a decision you're stuck on — f
 ## Running locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/claro.git
+git clone https://github.com/megh1002/claro.git
 cd claro
 npm install
 ```
