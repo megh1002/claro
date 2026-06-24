@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { WaterBackground } from "./WaterBackground";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Scopa",
-  description: "Know anything, instantly. 4 AI agents research any topic in parallel. You review. You decide.",
+  title: "Claro — make the call you won't regret",
+  description: "Describe a decision you're stuck on. Five AI agents debate it from every angle — facts, risks, tradeoffs, the counter-argument — then hand you a verdict you can trust.",
 };
 
 export default function RootLayout({
@@ -26,7 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <WaterBackground />
+        <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
       </body>
     </html>
   );

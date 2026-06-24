@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Claro — Make the call you won't regret.
 
-## Getting Started
+A multi-agent AI decision-making tool. Describe a decision you're stuck on — five specialized agents debate it in parallel and hand you a decisive verdict with a confidence score.
 
-First, run the development server:
+**Live:** https://claro-megh1002s-projects.vercel.app
+
+---
+
+## How it works
+
+1. **Input** — describe your decision and select what matters most (money, stability, growth, etc.)
+2. **Clarify** — an intake agent generates 3 tailored questions to sharpen the verdict
+3. **Debate** — 5 agents run in parallel:
+   - **Facts** — objective realities of each option
+   - **Risks** — what could go wrong and how likely
+   - **Tradeoffs** — gains and losses on your stated priorities
+   - **Devil's Advocate** — argues hard against the obvious choice
+   - **The Call** — weighs all four and delivers a decisive recommendation
+4. **Verdict** — confidence score, explanation, and one concrete next step
+5. **Journal** — save decisions, revisit them later, and log how they turned out
+
+---
+
+## Architecture
+
+- **Frontend:** Next.js 14 (App Router), TypeScript, React
+- **AI:** Groq API (LLaMA 3.3 70B) — 5 agents orchestrated with `Promise.all` for parallel execution
+- **Streaming:** Server-Sent Events (SSE) — responses stream live to the client as agents work
+- **Database + Auth:** Supabase (Postgres with row-level security)
+- **Rate limiting:** In-memory IP-based limiting (10 req/hr)
+- **Deployment:** Vercel
+
+---
+
+## Running locally
+
+```bash
+git clone https://github.com/YOUR_USERNAME/claro.git
+cd claro
+npm install
+```
+
+Create a `.env.local`:
+```
+GROQ_API_KEY=your_groq_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Agent prompts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Each agent lives in `/agents/*.md` — plain markdown files loaded at runtime. The coordinator assigns each agent a decision-specific question before they run in parallel.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built by [Meghna Sarda](https://www.linkedin.com/in/meghna-sarda)

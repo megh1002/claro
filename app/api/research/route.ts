@@ -11,14 +11,14 @@ function loadAgent(name: string): string {
 }
 
 async function runAgent(
-  agentName: string,
   systemPrompt: string,
   userMessage: string,
+  maxTokens: number,
   onChunk: (text: string) => void
 ): Promise<string> {
   const response = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",
-    max_tokens: 1500,
+    max_tokens: maxTokens,
     stream: true,
     messages: [
       { role: "system", content: systemPrompt },
@@ -47,11 +47,29 @@ export async function POST(req: Request) {
     );
   }
 
-  const { topic } = await req.json();
+  const { decision, priorities, answers } = await req.json();
 
-  if (!topic?.trim()) {
-    return new Response("Topic is required", { status: 400 });
+  if (!decision?.trim()) {
+    return new Response("Decision is required", { status: 400 });
   }
+
+  const priorityText =
+    Array.isArray(priorities) && priorities.length
+      ? priorities.join(", ")
+      : "not specified";
+
+  // answers: array of { q, a } from the clarifying step
+  const answerText =
+    Array.isArray(answers) && answers.length
+      ? answers
+          .filter((x: { q: string; a: string }) => x?.a?.trim())
+          .map((x: { q: string; a: string }) => `- ${x.q} → ${x.a}`)
+          .join("\n")
+      : "";
+
+  const context =
+    `DECISION: ${decision}\nWHAT MATTERS MOST TO THEM: ${priorityText}` +
+    (answerText ? `\n\nADDED CONTEXT (their answers to clarifying questions):\n${answerText}` : "");
 
   const encoder = new TextEncoder();
 
@@ -62,17 +80,14 @@ export async function POST(req: Request) {
       };
 
       try {
-        // Step 1: Coordinator decomposes the topic
-        send({ type: "status", agent: "coordinator", status: "working" });
-
-        const coordinatorPrompt = loadAgent("coordinator");
+        // Step 1: Coordinator assigns each agent a question
         const coordinatorResponse = await groq.chat.completions.create({
           model: "llama-3.3-70b-versatile",
           max_tokens: 500,
           stream: false,
           messages: [
-            { role: "system", content: coordinatorPrompt },
-            { role: "user", content: `Topic: ${topic}` },
+            { role: "system", content: loadAgent("coordinator") },
+            { role: "user", content: context },
           ],
         });
 
@@ -83,21 +98,27 @@ export async function POST(req: Request) {
           questions = JSON.parse(jsonMatch?.[0] ?? coordinatorText);
         } catch {
           questions = {
-            background_question: `What is ${topic} and why does it matter?`,
-            current_events_question: `What are the latest developments in ${topic}?`,
-            perspectives_question: `What are the main debates and opposing views on ${topic}?`,
-            so_what_question: `What are the practical implications of ${topic} for ordinary people?`,
+            facts_question: `What is objectively true about each option in this decision?`,
+            risks_question: `What could go wrong with each option?`,
+            tradeoffs_question: `What does the person gain and lose with each option, given their priorities?`,
+            devils_advocate_question: `Argue against the most obvious choice in this decision.`,
           };
         }
 
-        send({ type: "status", agent: "coordinator", status: "done", questions });
+        const stakes = ["low", "medium", "high"].includes(questions.stakes)
+          ? questions.stakes
+          : "medium";
+        const reversibility = questions.reversibility === "irreversible"
+          ? "irreversible"
+          : "reversible";
+        send({ type: "classification", stakes, reversibility });
 
-        // Step 2: All 4 research agents in parallel
+        // Step 2: 4 agents in parallel
         const agents = [
-          { name: "background", question: questions.background_question },
-          { name: "current-events", question: questions.current_events_question },
-          { name: "perspectives", question: questions.perspectives_question },
-          { name: "so-what", question: questions.so_what_question },
+          { name: "facts", question: questions.facts_question, tokens: 600 },
+          { name: "risks", question: questions.risks_question, tokens: 600 },
+          { name: "tradeoffs", question: questions.tradeoffs_question, tokens: 600 },
+          { name: "devils-advocate", question: questions.devils_advocate_question, tokens: 600 },
         ];
 
         for (const agent of agents) {
@@ -105,58 +126,48 @@ export async function POST(req: Request) {
         }
 
         const results = await Promise.all(
-          agents.map(({ name, question }) =>
-            runAgent(
-              name,
-              loadAgent(name),
-              question,
-              (text) => send({ type: "chunk", agent: name, text })
+          agents.map(({ name, question, tokens }) => {
+            const promptFile = name === "devils-advocate" ? "devils-advocate" : name;
+            const userMessage = `${context}\n\nYOUR TASK: ${question}`;
+            return runAgent(loadAgent(promptFile), userMessage, tokens, (text) =>
+              send({ type: "chunk", agent: name, text })
             ).then((output) => {
               send({ type: "status", agent: name, status: "done" });
               return { name, output };
-            })
-          )
+            });
+          })
         );
 
         const outputs: Record<string, string> = {};
-        for (const { name, output } of results) {
-          outputs[name] = output;
-        }
+        for (const { name, output } of results) outputs[name] = output;
 
-        // Step 3: Synthesizer
-        send({ type: "status", agent: "synthesizer", status: "working" });
+        // Step 3: The Call — the verdict
+        send({ type: "status", agent: "the-call", status: "working" });
 
-        const synthPrompt = loadAgent("synthesizer");
-        const synthUserMessage = `
-Topic: ${topic}
+        const callMessage = `${context}
 
-BACKGROUND RESEARCH:
-${outputs["background"]}
+FACTS:
+${outputs["facts"]}
 
-CURRENT EVENTS:
-${outputs["current-events"]}
+RISKS:
+${outputs["risks"]}
 
-PERSPECTIVES:
-${outputs["perspectives"]}
+TRADEOFFS:
+${outputs["tradeoffs"]}
 
-SO WHAT / PRACTICAL IMPLICATIONS:
-${outputs["so-what"]}
+DEVIL'S ADVOCATE:
+${outputs["devils-advocate"]}
 
-Write the unified research brief now.
-        `.trim();
+Now make the call.`;
 
-        let synthesized = "";
-        await runAgent("synthesizer", synthPrompt, synthUserMessage, (text) => {
-          synthesized += text;
-          send({ type: "chunk", agent: "synthesizer", text });
+        let verdict = "";
+        await runAgent(loadAgent("the-call"), callMessage, 500, (text) => {
+          verdict += text;
+          send({ type: "chunk", agent: "the-call", text });
         });
 
-        send({ type: "status", agent: "synthesizer", status: "done" });
-        send({
-          type: "complete",
-          outputs: { ...outputs, synthesized },
-          questions,
-        });
+        send({ type: "status", agent: "the-call", status: "done" });
+        send({ type: "complete", outputs: { ...outputs, verdict }, questions, stakes, reversibility });
       } catch (err) {
         send({ type: "error", message: (err as Error).message });
       } finally {

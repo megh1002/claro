@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --bg: #0e0b0d;
-    --bg-card: #130c10;
-    --bg-input: #160e12;
-    --border: #3d2030;
-    --border-subtle: #2a1520;
-    --text-primary: #f5eaee;
-    --text-secondary: #c4899a;
-    --text-muted: #7a4560;
-    --accent: #8b1a3a;
-    --accent-hover: #a01f45;
-    --accent-text: #f5eaee;
+    --bg: #0a2026;
+    --bg-card: #102931;
+    --bg-input: #102931;
+    --border: #244650;
+    --border-subtle: #244650;
+    --text-primary: #e8eef4;
+    --text-secondary: #7d93a8;
+    --text-muted: #5e7488;
+    --accent: #2f6fe0;
+    --accent-hover: #2f6fe0;
+    --accent-text: #e8eef4;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background-color: var(--bg);
+    background-color: #040f13;
     color: var(--text-primary);
     font-family: var(--font-geist-sans), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -52,10 +52,33 @@
   50% { opacity: 0; }
 }
 
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+.animate-breathe { animation: breathe 4.5s ease-in-out infinite; }
 .animate-pulse-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
 .animate-shimmer { animation: shimmer 2s ease-in-out infinite; }
 .animate-flow-in { animation: flow-in 0.4s ease-out forwards; }
 .animate-blink { animation: blink 1s step-end infinite; }
+
+/* Verdict markdown — the headline call */
+.verdict-body p {
+  font-size: 1rem;
+  color: #a8bccd;
+  line-height: 1.7;
+  margin-bottom: 0.6rem;
+}
+.verdict-body p:first-child {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #e8eef4;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+}
+.verdict-body strong { color: #e8eef4; font-weight: 500; }
+.verdict-body p:first-child strong { color: #e8eef4; }
 
 /* Report markdown */
 .report-body h2 {
@@ -70,13 +93,13 @@
 }
 .report-body h2:first-child { margin-top: 0; }
 .report-body p {
-  color: #d4a0b0;
+  color: #a8bccd;
   line-height: 1.75;
   margin-bottom: 0.85rem;
   font-size: 0.88rem;
 }
 .report-body ul, .report-body ol {
-  color: #d4a0b0;
+  color: #a8bccd;
   padding-left: 1.25rem;
   margin-bottom: 0.85rem;
   font-size: 0.88rem;
